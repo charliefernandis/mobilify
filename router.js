@@ -2,6 +2,7 @@ const express = require('express');
 const USER = require('./mongoDb/schema');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const cors = require("cors");
 
 router.get("/" , (req,res)=>{
     res.send("hello world!");
@@ -39,6 +40,9 @@ router.post("/skillapp/login", async(req,res)=>{
     }
 })
 
+router.get("/skillapp/login" , cors() , (req,res)=>{
+
+})
 
 router.post("/skillapp/signup" , async(req,res)=>{
     console.log(req.body);
