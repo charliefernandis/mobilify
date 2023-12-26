@@ -18,10 +18,10 @@ router.post("/skillapp/login", async(req,res)=>{
             if(password_check){
                 const token = await User.generateAuthToken();
 
-                res.cookie("myskillapp" , token , {
+                res.cookie("mobilehubapp" , token , {
                     expires:new Date(Date.now()+90000),
                     httpOnly:true
-                })
+                });
 
                 res.status(201).json({User});
             }
