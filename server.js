@@ -11,6 +11,10 @@ const app = express();
 app.use(express.json()); // always use app.use(router); below app.use(express.json()); 
 app.use(express.urlencoded({extended:true}))
 app.use(cors())
+app.use(cors({
+    // origin: 'https://mobilehub-0054a.web.app',
+  }));
+  
 app.use(router);
 
 
