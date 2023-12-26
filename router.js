@@ -39,6 +39,7 @@ router.post("/skillapp/login", async(req,res)=>{
     }
 })
 
+
 router.post("/skillapp/signup" , async(req,res)=>{
     console.log(req.body);
     const {email , username , password} = req.body;

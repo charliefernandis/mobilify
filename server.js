@@ -18,6 +18,10 @@ app.use(router);
 // So, when you see app.use(cors()) in a server's code (like in an Express.js application), it's like the server saying, "Sure, any website can ask me for information, and I'll allow it."
 
 
+app.get("/skillapp/login" , cors() , (req,res)=>{
+
+})
+
 app.listen(8005 , (req , res)=>{
     console.log("server running on port 8005");
 })
