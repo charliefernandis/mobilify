@@ -40,7 +40,7 @@ router.post("/skillapp/login", async(req,res)=>{
     }
 })
 
-router.get("/skillapp/login" , cors() , (req,res)=>{
+router.get("/skillapp/login" , (req,res)=>{
 
 })
 
