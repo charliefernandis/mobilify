@@ -40,14 +40,15 @@ userSchema.pre('save' , async function(next){
         this.password = await bcrypt.hash(this.password , 12);
     }
     next();
-})
+});
 
 
 userSchema.methods.generateAuthToken = async function(){
     try{
         let token_one = jwt.sign({_id:this._id} , secretKey);
-        this.tokens = this.tokens.concat({token:token_one});
-        await this.save();
+        // this.tokens = this.tokens.concat({token:token_one});
+        // await this.save();
+        console.log(token_one);
         return token_one;
     }
     catch(error){

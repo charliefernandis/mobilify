@@ -3,6 +3,8 @@ const USER = require('./mongoDb/schema');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const fetchuser = require('./middleware/fetchuser');
 
 router.get("/" , (req,res)=>{
     res.send("hello world!");
@@ -19,12 +21,19 @@ router.post("/skillapp/login", async(req,res)=>{
             if(password_check){
                 const token = await User.generateAuthToken();
 
-                res.cookie("mobilehubapp" , token , {
-                    expires:new Date(Date.now()+90000),
-                    httpOnly:true
-                });
 
-                res.status(201).json({User});
+
+                // res.cookie("mobilehubapp" , token , {
+                //     expires:new Date(Date.now()+90000),
+                //     httpOnly:true
+                // });
+
+
+
+                res.status(201).json({
+                    token,
+                    username:User.username
+                });
             }
             else{
                 res.status(400).json({error:"Incorrect Password"});
@@ -77,6 +86,17 @@ router.post("/skillapp/signup" , async(req,res)=>{
     }
     
 
+})
+
+router.post("/verify" , fetchuser , async(req,res)=>{
+    try{
+        const userid = req.user_id;
+        const user = await USER.findById(userid).select("-password");
+        res.status(201).json(user);
+    }
+    catch(error){
+
+    }
 })
 
 
