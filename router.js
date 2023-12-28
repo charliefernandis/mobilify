@@ -99,6 +99,12 @@ router.post("/verify" , fetchuser , async(req,res)=>{
     }
 })
 
+router.post("/admin/itemAdd" , (req,res)=>{
+    res.send("hello world");
+    const {name , category , imageurl , price , tagline , description1 , description2 , description3 , description4 , companyName} = req.body;
+    console.log(req.body);
+})
+
 
 
 module.exports = router;

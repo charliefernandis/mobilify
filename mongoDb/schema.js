@@ -4,6 +4,19 @@ const jwt = require("jsonwebtoken");
 const secretKey = process.env.Key;
 
 
+const orderedItemSchema = {
+    orderedItemId:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        unique:true
+    },
+    was_gift:{
+        type:Boolean
+    }
+}
+
+
+
 const userSchema = new mongoose.Schema({
     name:{
         type:String,
@@ -13,6 +26,12 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         unique:true
+    },
+    category:{
+        type:String,
+        required:true,
+        default:"user",
+        enum:["user" , "admin" , "sub-admin"]
     },
     email:{
         type:String,
@@ -32,8 +51,29 @@ const userSchema = new mongoose.Schema({
             }
         }
     ],
-    cart:Array
+    cart:Array,
+    orders:[orderedItemSchema],
+    total_orders:{}
 })
+
+
+
+// const cartItemSchema = mongoose.Schema({
+//     productId:{
+//         type:mongoose.Schema.Types.ObjectId,
+//         required:true,
+//         unique:true
+//     },
+//     text_on_trophy:{
+//         type:String,
+//         default:"Top Performer Award"
+//     },
+//     occasion:String,
+//     additional_detail:{
+//         type:String
+//     }
+
+// })
 
 userSchema.pre('save' , async function(next){
     if(this.isModified('password')){

@@ -10,11 +10,10 @@ const fetchuser = (req, res, next) => {
         const data = jwt.verify(token, secretKey);
         req.user_id = data._id;
         // res.send(req.user_id);
-        next();
     } catch (error) {
         res.status(401).send({ error: "server error" });
     }
-
+    next();
 }
 
 module.exports = fetchuser;
