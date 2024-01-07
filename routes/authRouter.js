@@ -1,16 +1,17 @@
 const express = require('express');
-const USER = require('./mongoDb/schema');
-const router = express.Router();
+const USER = require('../mongoDb/schema');
+const authRouter = express.Router();
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const fetchuser = require('./middleware/fetchuser');
+const fetchuser = require('../middleware/fetchuser');
+const authenticate = require('../middleware/authenticate');
 
-router.get("/" , (req,res)=>{
+authRouter.get("/" , (req,res)=>{
     res.send("hello world!");
 })
 
-router.post("/skillapp/login", async(req,res)=>{
+authRouter.post("/login", async(req,res)=>{
     const {email , password} = req.body;
     try{
         const email_check =await USER.findOne({email:email})
@@ -23,12 +24,12 @@ router.post("/skillapp/login", async(req,res)=>{
 
 
 
-                // res.cookie("mobilehubapp" , token , {
-                //     expires:new Date(Date.now()+90000),
-                //     httpOnly:true
-                // });
+                res.cookie("mobilehubapp" , token , {
+                    expires:new Date(Date.now()+90000),
+                    httpOnly:true
+                });
 
-
+                
 
                 res.status(201).json({
                     token,
@@ -49,11 +50,10 @@ router.post("/skillapp/login", async(req,res)=>{
     }
 })
 
-router.get("/skillapp/login" , (req,res)=>{
+authRouter.get("/test1" , authenticate , (req,res)=>{})
 
-})
 
-router.post("/skillapp/signup" , async(req,res)=>{
+authRouter.post("/signup" , async(req,res)=>{
     console.log(req.body);
     const {email , username , password} = req.body;
 
@@ -88,7 +88,7 @@ router.post("/skillapp/signup" , async(req,res)=>{
 
 })
 
-router.post("/verify" , fetchuser , async(req,res)=>{
+authRouter.post("/verify" , fetchuser , async(req,res)=>{
     try{
         const userid = req.user_id;
         const user = await USER.findById(userid).select("-password");
@@ -99,7 +99,13 @@ router.post("/verify" , fetchuser , async(req,res)=>{
     }
 })
 
-router.post("/admin/itemAdd" , (req,res)=>{
+.get("/hello" , (req,res)=>{
+    res.send("hello world");
+})
+
+
+
+authRouter.post("/admin/itemAdd" , (req,res)=>{
     res.send("hello world");
     const {name , category , imageurl , price , tagline , description1 , description2 , description3 , description4 , companyName} = req.body;
     console.log(req.body);
@@ -107,4 +113,4 @@ router.post("/admin/itemAdd" , (req,res)=>{
 
 
 
-module.exports = router;
+module.exports = authRouter;

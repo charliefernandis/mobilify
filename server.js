@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require('express');
-const router = require("./router")
+const router = require("./routes/authRouter")
 const cors = require("cors");
 const mongoose = require("mongoose");
+const userRouter = require("./routes/userRoutes");
+const cookieParser = require("cookie-parser");
 mongoose.set('strictQuery' , false);
 mongoose.connect(process.env.DB).then(()=>{console.log("Database connected");}).catch((error)=>{console.log(error);});
 
@@ -10,12 +12,14 @@ mongoose.connect(process.env.DB).then(()=>{console.log("Database connected");}).
 const app = express();
 app.use(express.json()); // always use app.use(router); below app.use(express.json()); 
 app.use(express.urlencoded({extended:true}))
+app.use(cookieParser());
 app.use(cors())
 app.use(cors({
     // origin: 'https://mobilehub-0054a.web.app',
   }));
   
 app.use(router);
+app.use(userRouter);
 
 
 // CORS (Cross-Origin Resource Sharing): Imagine your website is like a person (browser) asking for information (making a request) from another person (server). CORS is like giving permission to the person (browser) to ask for and get that information from the other person (server).

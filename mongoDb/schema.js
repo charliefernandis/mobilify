@@ -58,22 +58,7 @@ const userSchema = new mongoose.Schema({
 
 
 
-// const cartItemSchema = mongoose.Schema({
-//     productId:{
-//         type:mongoose.Schema.Types.ObjectId,
-//         required:true,
-//         unique:true
-//     },
-//     text_on_trophy:{
-//         type:String,
-//         default:"Top Performer Award"
-//     },
-//     occasion:String,
-//     additional_detail:{
-//         type:String
-//     }
 
-// })
 
 userSchema.pre('save' , async function(next){
     if(this.isModified('password')){
@@ -86,9 +71,9 @@ userSchema.pre('save' , async function(next){
 userSchema.methods.generateAuthToken = async function(){
     try{
         let token_one = jwt.sign({_id:this._id} , secretKey);
-        // this.tokens = this.tokens.concat({token:token_one});
-        // await this.save();
-        console.log(token_one);
+        this.tokens = this.tokens.concat({token:token_one});
+        await this.save();
+        // console.log("generating auth token: "+token_one);
         return token_one;
     }
     catch(error){
